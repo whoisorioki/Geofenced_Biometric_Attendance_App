@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "my-project",
+    "slug": "my-project",
+    "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "80ffcf4e-faca-4104-bb34-ba5672533304"
+      }
+    },
+    "android": {
+      "package": "com.whoisorioki.myproject"
+    },
+    "plugins": [
+      "expo-build-properties",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow JKUAT Attendance to use your location to verify you are in the classroom."
+        }
+      ]
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/80ffcf4e-faca-4104-bb34-ba5672533304",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    },
+    "ios": {}
+  }
+}
