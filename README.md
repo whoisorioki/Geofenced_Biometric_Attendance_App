@@ -131,7 +131,7 @@ npm install
    SNOWFLAKE_USER=<api-user>
    SNOWFLAKE_WAREHOUSE=<warehouse>
    SNOWFLAKE_DATABASE=<database>
-   SNOWFLAKE_SCHEMA=public
+   SNOWFLAKE_SCHEMA=CORE
    PRIVATE_KEY=<rsa-private-key-content>
    PUBLIC_KEY_FINGERPRINT=<fingerprint>
    ```

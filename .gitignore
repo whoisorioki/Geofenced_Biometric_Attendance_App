@@ -48,4 +48,5 @@ tmp/
 .expo/
 rsa_key.p8
 rsa_key.pub
+src/config/snowflake.config.js
 database/

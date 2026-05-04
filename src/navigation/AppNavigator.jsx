@@ -2,7 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
-import HomeScreen from '../screens/HomeScreen';
 import ClassSelectScreen from '../screens/ClassSelectScreen';
 import MarkAttendanceScreen from '../screens/MarkAttendanceScreen';
 import HistoryScreen from '../screens/HistoryScreen';
@@ -21,17 +20,6 @@ export default function AppNavigator() {
             headerStyle: { backgroundColor: '#080810' },
             headerTitleStyle: { color: '#00D4FF', fontWeight: 'bold' },
             headerTintColor: '#00D4FF',
-          }}
-        />
-        <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}
-          options={{
-            title: 'Dashboard',
-            headerStyle: { backgroundColor: '#080810' },
-            headerTitleStyle: { color: '#00D4FF', fontWeight: 'bold' },
-            headerTintColor: '#00D4FF',
-            headerBackTitle: 'Logout',
           }}
         />
         <Stack.Screen 

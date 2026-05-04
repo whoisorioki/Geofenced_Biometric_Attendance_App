@@ -55,7 +55,8 @@
     "react-navigation": "^4.4.4",
     "expo-build-properties": "~0.4.1",
     "expo-updates": "~0.15.6",
-    "@expo/ngrok": "^4.1.0"
+    "@expo/ngrok": "^4.1.0",
+    "expo-dev-client": "~2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

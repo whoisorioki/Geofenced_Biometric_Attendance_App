@@ -8,12 +8,14 @@ export default function LoginScreen({ navigation }) {
   const [studentId, setStudentId] = useState('STU001');
 
   const handleLogin = () => {
-    if (!studentId) {
-      Alert.alert('Error', 'Please enter your Student ID');
+    const normalizedStudentId = String(studentId || '').trim();
+
+    if (!/^STU\d{3,6}$/i.test(normalizedStudentId)) {
+      Alert.alert('Error', 'Please enter a valid Student ID (e.g. STU001)');
       return;
     }
 
-    navigation.navigate('ClassSelect', { studentId });
+    navigation.navigate('ClassSelect', { studentId: normalizedStudentId });
   };
 
   return (

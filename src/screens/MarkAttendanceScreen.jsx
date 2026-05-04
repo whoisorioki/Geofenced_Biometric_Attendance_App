@@ -79,16 +79,6 @@ const LAST_ATTENDANCE_STATUS_SQL = `
   LIMIT 1
 `;
 
-const REGISTER_STUDENT_SQL = `
-  INSERT INTO ATTENDANCE_DB.CORE.DIM_STUDENT (
-    STUDENT_ID, FIRST_NAME, LAST_NAME, EMAIL, ENROLLED_DEVICE_HASH, IS_ACTIVE
-  )
-  SELECT ?, ?, ?, ?, ?, TRUE
-  WHERE NOT EXISTS (
-    SELECT 1 FROM ATTENDANCE_DB.CORE.DIM_STUDENT WHERE STUDENT_ID = ?
-  )
-`;
-
 const GEOFENCE_STATUS_SQL = `
   SELECT IFF(
     ST_DWITHIN(
@@ -501,17 +491,7 @@ export default function MarkAttendanceScreen({ route, navigation }) {
 
       const resolvedClassId = selectedClassId ?? 'UNKNOWN';
 
-      // ── STEP 4: Auto-register student ─────────────────────────────
-      await withTimeout(executeSQL(REGISTER_STUDENT_SQL, {
-        '1': { type: 'TEXT', value: studentId },
-        '2': { type: 'TEXT', value: 'Student' },
-        '3': { type: 'TEXT', value: studentId },
-        '4': { type: 'TEXT', value: `${studentId}@autoreg.local` },
-        '5': { type: 'TEXT', value: hash },
-        '6': { type: 'TEXT', value: studentId },
-      }), 15000, 'SNOWFLAKE_TIMEOUT');
-
-      // ── STEP 5: Submit attendance ──────────────────────────────────
+      // ── STEP 4: Submit attendance ──────────────────────────────────
       snowflakeRequestAt = Date.now();
       const result = await withTimeout(executeSQL(CHECKIN_SQL, {
         '1':  { type: 'TEXT', value: studentId },
