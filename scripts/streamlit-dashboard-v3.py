@@ -176,11 +176,7 @@ with st.sidebar:
     st.caption("Governance Dashboard v3")
     st.divider()
 
-    selected_date = st.date_input(
-        "📅 Date",
-        value=pd.Timestamp.today(),
-        help="Filter attendance records by date"
-    )
+    st.subheader("🔍 Filters", divider="blue")
 
     # Load course list for filter
     try:
@@ -196,7 +192,51 @@ with st.sidebar:
     except Exception:
         course_options = ["All Courses"]
 
-    selected_course = st.selectbox("📚 Course", course_options)
+    selected_course = st.selectbox(
+        "📚 Course Filter",
+        course_options,
+        index=0,
+        help="Select a specific course or view all"
+    )
+
+    # Optional date filter
+    use_date_filter = st.checkbox(
+        "📅 Filter by Date",
+        value=False,
+        help="Enable to filter records by a specific date"
+    )
+
+    selected_date = None
+    if use_date_filter:
+        selected_date = st.date_input(
+            "Select Date",
+            value=pd.Timestamp.today(),
+            help="Show records from this date"
+        )
+
+    # Optional date range filter
+    use_date_range = st.checkbox(
+        "📅 Filter by Date Range",
+        value=False,
+        help="Enable to filter records by date range"
+    )
+
+    date_range = (None, None)
+    if use_date_range:
+        col_start, col_end = st.columns(2)
+        with col_start:
+            start_date = st.date_input(
+                "From",
+                value=pd.Timestamp.today() - pd.Timedelta(days=7),
+                help="Start date"
+            )
+        with col_end:
+            end_date = st.date_input(
+                "To",
+                value=pd.Timestamp.today(),
+                help="End date"
+            )
+        date_range = (start_date, end_date)
 
     st.divider()
 
@@ -223,16 +263,23 @@ audit_df   = load_audit(session)
 timetable  = load_timetable(session)
 geofence   = load_geofence(session)
 
-# Apply date filter
-if not df_all.empty and "CHECK_IN_TIME_EAT" in df_all.columns:
-    df = df_all[df_all["CHECK_IN_TIME_EAT"].str.startswith(str(selected_date))].copy()
-else:
-    df = df_all.copy()
+# Start with all data
+df = df_all.copy()
 
 # Apply course filter
-if selected_course != "All Courses":
+if selected_course != "All Courses" and not df.empty:
     course_id = selected_course.split(" — ")[0]
     df = df[df["COURSE_ID"] == course_id]
+
+# Apply date filter (single date)
+if use_date_filter and selected_date and not df.empty and "CHECK_IN_TIME_EAT" in df.columns:
+    df = df[df["CHECK_IN_TIME_EAT"].str.startswith(str(selected_date))]
+
+# Apply date range filter
+if use_date_range and date_range[0] and date_range[1] and not df.empty and "CHECK_IN_TIME_EAT" in df.columns:
+    start_str = str(date_range[0])
+    end_str = str(date_range[1])
+    df = df[(df["CHECK_IN_TIME_EAT"] >= start_str) & (df["CHECK_IN_TIME_EAT"] < end_str)]
 
 # ─────────────────────────────────────────────────────────────────
 # TABS
